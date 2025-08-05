@@ -3,12 +3,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Rating from './Rating'; // A component to display stars
+import ProjectDetails from '../pages/ProjectDetailPage'; // Function to handle project details navigation
 
 const ProjectCard = ({ project }) => {
   if (!project) return null;
 
   return (
-    <div className="project-card">
+    <div className="project-card" >
       <Link to={`/project/${project._id}`} className="card-link">
         <img src={project.image} alt={project.name} className="project-card-image" />
         <div className="project-card-body">
