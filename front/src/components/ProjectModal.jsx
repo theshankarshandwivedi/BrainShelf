@@ -7,6 +7,7 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
   const [userRating, setUserRating] = useState(0);
   
   // This would come from your auth context
+  //adding extra comment
   const isAuthenticated = true;
 
   const handleRatingSubmit = (newRating) => {
