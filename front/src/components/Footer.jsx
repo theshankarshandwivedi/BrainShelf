@@ -5,6 +5,7 @@ function Footer() {
     <div>
       <div>
         Adding one more div just to push
+        adding another div
       </div>
     </div>
   )
