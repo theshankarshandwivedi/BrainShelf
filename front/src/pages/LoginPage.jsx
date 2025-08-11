@@ -1,15 +1,26 @@
 // src/pages/LoginPage.jsx
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 // You would import these icons from your assets folder
 // import GoogleIcon from '../assets/google-icon.svg';
 // import GitHubIcon from '../assets/github-icon.svg';
 
 const LoginPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const location = useLocation();
   const navigate = useNavigate();
+  const { login } = useAuth();
+  
+  // Determine if we're on register page or login page
+  const isRegisterPage = location.pathname === '/register';
+  const [isLogin, setIsLogin] = useState(!isRegisterPage);
+
+  // Update state when route changes
+  useEffect(() => {
+    setIsLogin(!isRegisterPage);
+  }, [isRegisterPage]);
 
   // In a real app, these handlers would make API calls to your backend
   const handleAuth = (e) => {
@@ -21,7 +32,16 @@ const LoginPage = () => {
 
     // 2. Make API call to /api/users/login or /api/users/register
     // 3. On success, save token, update auth state, and navigate
-    // For demonstration, we'll just navigate to the homepage
+    // For demonstration, we'll simulate a successful login
+    const mockUserData = {
+      username: data.email.split('@')[0], // Use email prefix as username
+      email: data.email,
+      name: data.name || 'User'
+    };
+    const mockToken = 'mock-jwt-token-' + Date.now();
+    
+    // Simulate login
+    login(mockUserData, mockToken);
     alert(isLogin ? 'Login successful!' : 'Registration successful!');
     navigate('/');
   };
@@ -35,7 +55,11 @@ const LoginPage = () => {
   };
 
   const switchAuthMode = () => {
-    setIsLogin((prevIsLogin) => !prevIsLogin);
+    if (isLogin) {
+      navigate('/register');
+    } else {
+      navigate('/login');
+    }
   };
 
   return (

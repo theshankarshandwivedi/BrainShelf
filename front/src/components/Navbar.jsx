@@ -1,16 +1,16 @@
 // src/components/Navbar.jsx
 
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-  // This would come from your auth context or Redux store
-  const isAuthenticated = true; // Use `false` to see the logged-out state
-  const user = { username: 'dev_user' };
+  const { isAuthenticated, user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear user session/token and update auth state
-    alert('Logged out!');
+    logout();
+    navigate('/login');
   };
 
   return (
@@ -31,13 +31,18 @@ const Navbar = () => {
       <div className="navbar-auth">
         {isAuthenticated ? (
           <>
-            <span className="navbar-username">Welcome, {user.username}</span>
+            <span className="navbar-username">Welcome, {user?.username}</span>
             <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
           </>
         ) : (
-          <Link to="/login" className="btn btn-primary">
-            Login
-          </Link>
+          <div className="auth-buttons">
+            <Link to="/login" className="btn btn-primary">
+              Login
+            </Link>
+            <Link to="/register" className="btn btn-outline-primary">
+              Register
+            </Link>
+          </div>
         )}
       </div>
     </nav>

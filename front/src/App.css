@@ -1,7 +1,8 @@
 #root {
-  max-width: 1580px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
 
@@ -47,6 +48,8 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   padding: 20px 0;
+  width: 100%;
+  max-width: none;
 }
 
 .project-card {
@@ -273,6 +276,9 @@
 /* Homepage Styles */
 .homepage-container {
   text-align: left;
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
 .homepage-header {
@@ -295,4 +301,129 @@
   padding: 40px;
   font-size: 1.1rem;
   color: #666;
+}
+
+/* Auth Page Styles */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.auth-card p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form {
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.divider {
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #adb5bd;
+  position: relative;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #dee2e6;
+  z-index: 1;
+}
+
+.divider span {
+  background: white;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.social-login-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-social {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  background: white;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-social:hover {
+  background-color: #f8f9fa;
+}
+
+.auth-switch {
+  text-align: center;
+  color: #666;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  margin-left: 0.5rem;
+}
+
+.btn-link:hover {
+  color: #0056b3;
 }
