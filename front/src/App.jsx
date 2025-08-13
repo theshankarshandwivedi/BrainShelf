@@ -16,19 +16,24 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<LoginPage />} />
-          <Route path="/upload" element={
-            <ProtectedRoute>
-              <UploadProjectPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/projects/:id" element={<ProjectCard />} />
-          <Route path="/projects/:id/rating" element={<Rating />} />
-        </Routes>
+        <div className="app-container">
+          <Navbar />
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<LoginPage />} />
+              <Route path="/upload" element={
+                <ProtectedRoute>
+                  <UploadProjectPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/projects/:id" element={<ProjectCard />} />
+              <Route path="/projects/:id/rating" element={<Rating />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </Router>
     </AuthProvider>
   );
