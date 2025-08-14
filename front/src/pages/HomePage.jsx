@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
+import ApiService from '../services/api';
 
 // Dummy data to simulate API response
 const dummyProjects = [
@@ -62,19 +63,20 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    
-    fetch('/api/projects')
-      .then(res => res.json())
-      .then(data => {
-        setProjects(data);
+    const fetchProjects = async () => {
+      try {
+        const response = await ApiService.getAllProjects();
+        setProjects(response.projects || []);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        // Fallback to dummy data
+        setProjects(dummyProjects);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
 
-    // Simulating API call
-    setTimeout(() => {
-      setProjects(dummyProjects);
-      setLoading(false);
-    }, 1000);
+    fetchProjects();
   }, []);
 
   if (loading) {

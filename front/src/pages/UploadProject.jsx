@@ -2,11 +2,15 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import ApiService from '../services/api';
 
 const UploadProjectPage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleTagInput = (e) => {
     if (e.key === ' ' || e.key === 'Enter') {
@@ -22,22 +26,25 @@ const UploadProjectPage = () => {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    // In a real app, you'd handle file uploads properly
-    const projectData = {
-      name: formData.get('name'),
-      shortDescription: formData.get('shortDescription'),
-      longDescription: formData.get('longDescription'),
-      image: formData.get('image'), // This would be a file object
-      tags: tags
-    };
-
-    console.log("Uploading project:", projectData);
-    // Make POST request to `/api/projects`
-    alert('Project uploaded successfully!');
-    navigate('/'); // Navigate to homepage after upload
+    setLoading(true);
+    
+    try {
+      const formData = new FormData(e.target);
+      
+      // Add additional fields
+      formData.append('user', user?.username || 'Anonymous');
+      formData.append('tags', JSON.stringify(tags));
+      
+      await ApiService.uploadProject(formData);
+      alert('Project uploaded successfully!');
+      navigate('/');
+    } catch (error) {
+      alert(error.message || 'Upload failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,18 +57,13 @@ const UploadProjectPage = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="shortDescription">Short Description (Max 150 characters)</label>
-          <input type="text" id="shortDescription" name="shortDescription" maxLength="150" required />
+          <label htmlFor="description">Description</label>
+          <textarea id="description" name="description" rows="8" required></textarea>
         </div>
 
         <div className="form-group">
-          <label htmlFor="longDescription">Long Description</label>
-          <textarea id="longDescription" name="longDescription" rows="8" required></textarea>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="image">Project Image</label>
-          <input type="file" id="image" name="image" accept="image/*" required />
+          <label htmlFor="imgFile">Project Image</label>
+          <input type="file" id="imgFile" name="imgFile" accept="image/*" required />
         </div>
         
         <div className="form-group">
@@ -84,7 +86,9 @@ const UploadProjectPage = () => {
           </div>
         </div>
 
-        <button type="submit" className="btn btn-primary">Submit Project</button>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? 'Uploading...' : 'Submit Project'}
+        </button>
       </form>
     </div>
   );

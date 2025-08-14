@@ -25,22 +25,23 @@ exports.registerControll = async (req, res) => {
                 message: "Passwords did not match",
             })
         }
+        
         console.log("password matched");
-        const getUser = await User.findOne({email: email});
+        const getUser = await User.findOne({ $or: [{email: email}, {username: username}] });
         if(getUser){
             return res.status(402).json({
                 success: false,
-                message: "User already registered",
+                message: "User with this email or username already exists",
             })
         }
         console.log("this is a new user");
-        // const hashedPass = await bcrypt.hash(password,10);
+        const hashedPass = await bcrypt.hash(password, 10);
 
         const user = await User.create({
             name,
             username,
             email,
-            password,
+            password: hashedPass,
         });
 
         return res.status(200).json({

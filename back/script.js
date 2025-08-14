@@ -6,6 +6,13 @@ const app = express();
 //loading dotenv to process
 require("dotenv").config();
 
+//cors middleware
+const cors = require("cors");
+app.use(cors({
+    origin: "http://localhost:5173", // Vite's default port
+    credentials: true
+}));
+
 //using middleware of json
 app.use(express.json());
 

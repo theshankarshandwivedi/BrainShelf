@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ApiService from '../services/api';
 
 // You would import these icons from your assets folder
 // import GoogleIcon from '../assets/google-icon.svg';
@@ -22,28 +23,39 @@ const LoginPage = () => {
     setIsLogin(!isRegisterPage);
   }, [isRegisterPage]);
 
-  // In a real app, these handlers would make API calls to your backend
-  const handleAuth = (e) => {
+  // Real API integration
+  const handleAuth = async (e) => {
     e.preventDefault();
-    // 1. Get form data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    console.log('Submitting:', data);
-
-    // 2. Make API call to /api/users/login or /api/users/register
-    // 3. On success, save token, update auth state, and navigate
-    // For demonstration, we'll simulate a successful login
-    const mockUserData = {
-      username: data.email.split('@')[0], // Use email prefix as username
-      email: data.email,
-      name: data.name || 'User'
-    };
-    const mockToken = 'mock-jwt-token-' + Date.now();
     
-    // Simulate login
-    login(mockUserData, mockToken);
-    alert(isLogin ? 'Login successful!' : 'Registration successful!');
-    navigate('/');
+    try {
+      if (isLogin) {
+        // Login
+        const response = await ApiService.login({
+          email: data.email,
+          password: data.password
+        });
+        
+        login(response.user, response.token);
+        alert('Login successful!');
+        navigate('/');
+      } else {
+        // Register
+        await ApiService.register({
+          name: data.name,
+          username: data.username,
+          email: data.email,
+          password: data.password,
+          confirmPassword: data.confirmPassword
+        });
+        
+        alert('Registration successful! Please login.');
+        navigate('/login');
+      }
+    } catch (error) {
+      alert(error.message || 'Authentication failed');
+    }
   };
 
   const handleSocialLogin = (provider) => {
@@ -89,6 +101,12 @@ const LoginPage = () => {
             <label htmlFor="password">Password</label>
             <input type="password" id="password" name="password" required />
           </div>
+          {!isLogin && (
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" name="confirmPassword" required />
+            </div>
+          )}
           <button type="submit" className="btn btn-primary">
             {isLogin ? 'Login' : 'Sign Up'}
           </button>
