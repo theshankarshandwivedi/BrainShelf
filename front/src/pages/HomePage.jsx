@@ -11,36 +11,33 @@ const dummyProjects = [
     _id: '1', 
     name: 'AI-Powered Chatbot', 
     image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    rating: 4.5, 
-    user: { username: 'janedoe', name: 'Jane Doe' }, 
-    description: { 
-      short: 'A chatbot using NLP to understand user queries.',
-      long: 'This project is a sophisticated AI-powered chatbot built with the MERN stack and integrated with the Dialogflow API for natural language processing. It features real-time communication via WebSockets, user authentication, and a dashboard for analyzing conversation logs. The goal was to create a seamless and intelligent conversational agent for customer support applications.'
-    }, 
+    averageRating: 4.5,
+    totalRatings: 12,
+    ratings: [],
+    user: 'janedoe', 
+    description: 'A chatbot using NLP to understand user queries. This project is a sophisticated AI-powered chatbot built with the MERN stack and integrated with the Dialogflow API for natural language processing.',
     tags: ['AI', 'React', 'Node.js'] 
   },
   { 
     _id: '2', 
     name: 'E-commerce Platform', 
     image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    rating: 4.8, 
-    user: { username: 'johnsmith', name: 'John Smith' }, 
-    description: { 
-      short: 'A full-stack e-commerce site with payment integration.',
-      long: 'A comprehensive e-commerce platform built with the MERN stack featuring user authentication, product catalog, shopping cart, payment processing with Stripe, order management, and an admin dashboard. The platform includes features like product search, filtering, reviews, and real-time inventory management.'
-    }, 
+    averageRating: 4.8,
+    totalRatings: 25,
+    ratings: [],
+    user: 'johnsmith', 
+    description: 'A full-stack e-commerce site with payment integration. A comprehensive e-commerce platform built with the MERN stack featuring user authentication and payment processing.',
     tags: ['MERN', 'Stripe'] 
   },
   { 
     _id: '3', 
     name: 'Portfolio Website Builder', 
     image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    rating: 4.2, 
-    user: { username: 'dev_user', name: 'Dev User' }, 
-    description: { 
-      short: 'A tool to quickly generate and deploy portfolio websites.',
-      long: 'A drag-and-drop portfolio website builder that allows developers and designers to create professional portfolios without coding. Features include customizable templates, project showcases, contact forms, blog integration, and one-click deployment to various hosting platforms.'
-    }, 
+    averageRating: 4.2,
+    totalRatings: 8,
+    ratings: [],
+    user: 'dev_user', 
+    description: 'A tool to quickly generate and deploy portfolio websites. A drag-and-drop portfolio website builder that allows developers and designers to create professional portfolios.',
     tags: ['Next.js', 'Vercel'] 
   },
 ];
