@@ -1,23 +1,61 @@
 // src/components/ProjectModal.jsx
 
-import React, { useState } from 'react';
-import Rating from './Rating';
+import React, { useState, useEffect, useCallback } from 'react';
+import StarRating from './StarRating';
+import { useAuth } from '../context/AuthContext';
+import ApiService from '../services/api';
 
 const ProjectModal = ({ project, isOpen, onClose }) => {
   const [userRating, setUserRating] = useState(0);
+  const [currentAverage, setCurrentAverage] = useState(0);
+  const [totalRatings, setTotalRatings] = useState(0);
+  const [loading, setLoading] = useState(false);
   
-  // This would come from your auth context
-  //adding extra comment
-  const isAuthenticated = true;
+  const { isAuthenticated, user } = useAuth();
 
-  const handleRatingSubmit = (newRating) => {
-    if (!isAuthenticated) {
+  const fetchUserRating = useCallback(async () => {
+    if (!project?._id || !user?.id) return;
+    
+    try {
+      const response = await ApiService.getUserRating(project._id, user.id);
+      setUserRating(response.userRating || 0);
+      setCurrentAverage(response.averageRating || 0);
+      setTotalRatings(response.totalRatings || 0);
+    } catch (error) {
+      console.error('Error fetching user rating:', error);
+    }
+  }, [project?._id, user?.id]);
+
+  useEffect(() => {
+    if (project && isOpen) {
+      setCurrentAverage(project.averageRating || 0);
+      setTotalRatings(project.totalRatings || 0);
+      
+      // Fetch user's existing rating if authenticated
+      if (isAuthenticated && user) {
+        fetchUserRating();
+      }
+    }
+  }, [project, isOpen, isAuthenticated, user, fetchUserRating]);
+
+  const handleRatingSubmit = async (newRating) => {
+    if (!isAuthenticated || !user) {
       alert('You must be logged in to rate projects.');
       return;
     }
-    setUserRating(newRating);
-    // API call to submit the rating to `/api/projects/${project._id}/rate`
-    alert(`You rated this project ${newRating} stars!`);
+
+    setLoading(true);
+    try {
+      const response = await ApiService.rateProject(project._id, newRating, user.id);
+      setUserRating(newRating);
+      setCurrentAverage(response.averageRating);
+      setTotalRatings(response.totalRatings);
+      alert(response.message);
+    } catch (error) {
+      alert(error.message || 'Failed to submit rating');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleOverlayClick = (e) => {
@@ -41,10 +79,11 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
         <div className="modal-body">
           <div className="project-modal-meta">
             <span className="project-author">
-              By {project.user?.name || project.user?.username} (@{project.user.username})
+              By {project.user?.name || project.user?.username || project.user} 
+              {project.user?.username && ` (@${project.user.username})`}
             </span>
             <div className="project-tags">
-              {project.tags.map(tag => (
+              {project.tags?.map(tag => (
                 <span key={tag} className="tag">{tag}</span>
               ))}
             </div>
@@ -59,34 +98,49 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
           <div className="project-modal-content">
             <h3>About this Project</h3>
             <p className="project-description">
-              {project.description?.long || project.description?.short}
+              {project.description?.long || project.description}
             </p>
           </div>
 
           <div className="project-rating-section">
-            <h4>Rate this Project</h4>
+            <h4>Project Rating</h4>
             <div className="rating-display">
-              <span>Current Rating: {project.rating.toFixed(1)} / 5.0</span>
-              <Rating 
-                value={userRating || project.rating} 
-                onRate={handleRatingSubmit} 
-                readOnly={!isAuthenticated}
-              />
+              <div className="current-rating">
+                <span>Average Rating: </span>
+                <StarRating 
+                  rating={currentAverage} 
+                  interactive={false}
+                  size="medium"
+                  showNumber={true}
+                />
+                <span className="total-ratings">({totalRatings} ratings)</span>
+              </div>
+              
+              {isAuthenticated ? (
+                <div className="user-rating">
+                  <h5>Your Rating:</h5>
+                  <StarRating 
+                    rating={userRating}
+                    onRatingChange={handleRatingSubmit}
+                    interactive={!loading}
+                    size="large"
+                    showNumber={false}
+                  />
+                  {loading && <span>Submitting...</span>}
+                  {userRating > 0 && <span>You rated: {userRating} stars</span>}
+                </div>
+              ) : (
+                <p className="login-prompt">
+                  You must be logged in to rate projects.
+                </p>
+              )}
             </div>
-            {!isAuthenticated && (
-              <p className="login-prompt">
-                You must be logged in to rate projects.
-              </p>
-            )}
           </div>
         </div>
         
         <div className="modal-footer">
           <button className="btn btn-secondary" onClick={onClose}>
             Close
-          </button>
-          <button className="btn btn-primary">
-            View Full Details
           </button>
         </div>
       </div>

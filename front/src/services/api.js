@@ -79,6 +79,18 @@ class ApiService {
 
     return data;
   }
+
+  // Rating methods
+  async rateProject(projectId, rating, userId) {
+    return this.request(`/projects/${projectId}/rate`, {
+      method: 'POST',
+      body: JSON.stringify({ rating, userId }),
+    });
+  }
+
+  async getUserRating(projectId, userId) {
+    return this.request(`/projects/${projectId}/rating?userId=${userId}`);
+  }
 }
 
 export default new ApiService();

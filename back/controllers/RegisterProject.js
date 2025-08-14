@@ -41,7 +41,9 @@ exports.projectReg = async (req, res) => {
             name,
             description,
             image,
-            rating: 0,
+            averageRating: 0,
+            totalRatings: 0,
+            ratings: [],
             user,
             tags
         })

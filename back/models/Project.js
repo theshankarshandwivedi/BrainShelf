@@ -21,9 +21,33 @@ const projectModel = new mongoose.Schema({
         type: String,
         required: true,
     },
-    rating: {
+    averageRating: {
         type: Number,
+        default: 0
     },
+    totalRatings: {
+        type: Number,
+        default: 0
+    },
+    ratings: [
+        {
+            userId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            },
+            rating: {
+                type: Number,
+                required: true,
+                min: 1,
+                max: 5
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ],
     user: {
         type: String,
         required: true,
@@ -34,6 +58,8 @@ const projectModel = new mongoose.Schema({
             required: true
         }
     ]
+}, {
+    timestamps: true
 })
 
 
