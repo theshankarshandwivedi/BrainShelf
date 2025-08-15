@@ -890,3 +890,46 @@
 .btn-link:hover {
   color: #0056b3;
 }
+
+/* Star Rating Component Styles */
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star-rating .stars {
+  display: flex;
+  gap: 1px;
+}
+
+.star-rating .star {
+  transition: color 0.2s ease;
+  user-select: none;
+}
+
+.star-rating .star.clickable:hover {
+  transform: scale(1.1);
+}
+
+.star-rating.interactive .star {
+  cursor: pointer;
+}
+
+.rating-number {
+  font-size: 0.9em;
+  color: #666;
+  margin-left: 8px;
+}
+
+.project-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.total-ratings {
+  font-size: 0.9em;
+  color: #666;
+}

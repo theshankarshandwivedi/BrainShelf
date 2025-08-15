@@ -14,17 +14,19 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
   const { isAuthenticated, user } = useAuth();
 
   const fetchUserRating = useCallback(async () => {
-    if (!project?._id || !user?.id) return;
+    if (!project?._id || !isAuthenticated) return;
     
     try {
-      const response = await ApiService.getUserRating(project._id, user.id);
-      setUserRating(response.userRating || 0);
-      setCurrentAverage(response.averageRating || 0);
-      setTotalRatings(response.totalRatings || 0);
+      const response = await ApiService.getUserRating(project._id);
+      if (response.success) {
+        setUserRating(response.data.userRating || 0);
+        setCurrentAverage(response.data.averageRating || 0);
+        setTotalRatings(response.data.totalRatings || 0);
+      }
     } catch (error) {
       console.error('Error fetching user rating:', error);
     }
-  }, [project?._id, user?.id]);
+  }, [project?._id, isAuthenticated]);
 
   useEffect(() => {
     if (project && isOpen) {
@@ -46,13 +48,15 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
 
     setLoading(true);
     try {
-      const response = await ApiService.rateProject(project._id, newRating, user.id);
-      setUserRating(newRating);
-      setCurrentAverage(response.averageRating);
-      setTotalRatings(response.totalRatings);
-      alert(response.message);
+      const response = await ApiService.rateProject(project._id, newRating);
+      if (response.success) {
+        setUserRating(newRating);
+        setCurrentAverage(response.data.averageRating);
+        setTotalRatings(response.data.totalRatings);
+      }
     } catch (error) {
-      alert(error.message || 'Failed to submit rating');
+      console.error('Error submitting rating:', error);
+      alert('Failed to submit rating. Please try again.');
     } finally {
       setLoading(false);
     }

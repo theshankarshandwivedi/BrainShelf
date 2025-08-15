@@ -81,15 +81,19 @@ class ApiService {
   }
 
   // Rating methods
-  async rateProject(projectId, rating, userId) {
+  async rateProject(projectId, rating) {
     return this.request(`/projects/${projectId}/rate`, {
       method: 'POST',
-      body: JSON.stringify({ rating, userId }),
+      body: JSON.stringify({ rating }),
     });
   }
 
-  async getUserRating(projectId, userId) {
-    return this.request(`/projects/${projectId}/rating?userId=${userId}`);
+  async getUserRating(projectId) {
+    return this.request(`/projects/${projectId}/rating`);
+  }
+
+  async getProjectRatings(projectId) {
+    return this.request(`/projects/${projectId}/ratings`);
   }
 }
 
