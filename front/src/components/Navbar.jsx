@@ -28,7 +28,12 @@ const Navbar = () => {
       <Link to="/" className="navbar-brand">BrainShelf</Link>
       
       {/* Mobile menu button */}
-      <button className="navbar-toggle" onClick={toggleMenu} aria-label="Toggle menu">
+      <button 
+        className="navbar-toggle" 
+        onClick={toggleMenu} 
+        aria-label="Toggle navigation menu"
+        aria-expanded={isMenuOpen}
+      >
         <span className={`hamburger ${isMenuOpen ? 'active' : ''}`}>
           <span></span>
           <span></span>
@@ -57,13 +62,32 @@ const Navbar = () => {
               Upload Project
             </NavLink>
           </li>
+          {isAuthenticated && (
+            <li>
+              <NavLink 
+                to={`/profile/${user?.username}`}
+                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+                onClick={closeMenu}
+              >
+                My Profile
+              </NavLink>
+            </li>
+          )}
         </ul>
         
         <div className="navbar-auth">
           {isAuthenticated ? (
             <>
-              <span className="navbar-username">Welcome, {user?.username}</span>
-              <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
+              <div className="user-menu">
+                <Link 
+                  to={`/profile/${user?.username}`} 
+                  className="profile-link"
+                  onClick={closeMenu}
+                >
+                  <span className="navbar-username">👤 {user?.username}</span>
+                </Link>
+                <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
+              </div>
             </>
           ) : (
             <div className="auth-buttons">

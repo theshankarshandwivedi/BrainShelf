@@ -95,6 +95,45 @@ class ApiService {
   async getProjectRatings(projectId) {
     return this.request(`/projects/${projectId}/ratings`);
   }
+
+  // User profile methods
+  async getUserProfile(username) {
+    return this.request(`/users/${username}`);
+  }
+
+  async getUserProjects(userId) {
+    return this.request(`/users/${userId}/projects`);
+  }
+
+  async updateUserProfile(userId, profileData) {
+    return this.request(`/users/${userId}`, {
+      method: 'PUT',
+      body: JSON.stringify(profileData),
+    });
+  }
+
+  async uploadAvatar(userId, formData) {
+    const token = localStorage.getItem('authToken');
+    const config = {
+      method: 'POST',
+      body: formData,
+    };
+
+    if (token) {
+      config.headers = {
+        Authorization: `Bearer ${token}`,
+      };
+    }
+
+    const response = await fetch(`${API_BASE_URL}/users/${userId}/avatar`, config);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Avatar upload failed');
+    }
+
+    return data;
+  }
 }
 
 export default new ApiService();

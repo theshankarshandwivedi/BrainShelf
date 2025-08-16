@@ -1,0 +1,236 @@
+/* Navbar Profile Styling */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-link {
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.profile-link:hover {
+  transform: translateY(-1px);
+}
+
+.navbar-username {
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background: var(--bg-secondary);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px; /* Touch-friendly */
+}
+
+.navbar-username:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* Project Card Author Link */
+.project-card-author {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  padding: 0.25rem;
+  border-radius: 4px;
+  min-height: 44px; /* Touch-friendly */
+  display: inline-flex;
+  align-items: center;
+}
+
+.project-card-author:hover {
+  color: var(--primary);
+  text-decoration: underline;
+  background: var(--hover, rgba(0, 0, 0, 0.05));
+}
+
+/* Mobile Navigation Enhancements */
+.navbar-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger {
+  width: 24px;
+  height: 18px;
+  position: relative;
+}
+
+.hamburger span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: var(--text-primary);
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+
+.hamburger span:nth-child(1) {
+  top: 0;
+}
+
+.hamburger span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hamburger span:nth-child(3) {
+  bottom: 0;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg);
+  top: 50%;
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg);
+  bottom: 50%;
+}
+
+@media (max-width: 768px) {
+  .user-menu {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .profile-link {
+    width: 100%;
+  }
+
+  .navbar-username {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+  }
+
+  /* Enhanced mobile menu */
+  .navbar-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+
+  .navbar-menu.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+
+  .nav-link {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    background: var(--primary);
+    color: white;
+  }
+
+  .navbar-auth {
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Smooth overlay */
+  .navbar-overlay {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .navbar-username {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Focus styles for accessibility */
+.navbar-toggle:focus,
+.profile-link:focus,
+.nav-link:focus,
+.project-card-author:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .navbar-username,
+  .nav-link,
+  .project-card-author {
+    border: 1px solid currentColor;
+  }
+}

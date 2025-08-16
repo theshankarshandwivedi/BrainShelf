@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import Footer from './components/Footer';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import ProfilePage from './pages/ProfilePage';
 
 
 function App() {
@@ -30,6 +31,12 @@ function App() {
               } />
               <Route path="/projects/:id" element={<ProjectCard />} />
               <Route path="/projects/:id/rating" element={<Rating />} />
+              <Route path="/profile/:username" element={<ProfilePage />} />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              } />
             </Routes>
           </main>
           <Footer />

@@ -1,6 +1,7 @@
 // src/components/ProjectCard.jsx
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import StarRating from './StarRating';
 
 const ProjectCard = ({ project, onClick }) => {
@@ -12,6 +13,10 @@ const ProjectCard = ({ project, onClick }) => {
     }
   };
 
+  const handleAuthorClick = (e) => {
+    e.stopPropagation(); // Prevent card click when clicking author
+  };
+
   return (
     <div className="project-card" onClick={handleCardClick}>
       <img src={project.image} alt={project.name} className="project-card-image" />
@@ -21,7 +26,13 @@ const ProjectCard = ({ project, onClick }) => {
           {project.description?.short || project.description}
         </p>
         <div className="project-card-footer">
-          <span className="project-card-author">by @{project.user?.username || project.user}</span>
+          <Link 
+            to={`/profile/${project.user?.username || project.user}`}
+            className="project-card-author"
+            onClick={handleAuthorClick}
+          >
+            by @{project.user?.username || project.user}
+          </Link>
           <div className="project-rating">
             <StarRating 
               rating={project.averageRating || 0} 

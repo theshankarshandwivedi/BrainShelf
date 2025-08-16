@@ -57,7 +57,19 @@ const projectModel = new mongoose.Schema({
             type: String,
             required: true
         }
-    ]
+    ],
+    views: {
+        type: Number,
+        default: 0
+    },
+    likes: {
+        type: Number,
+        default: 0
+    },
+    title: {
+        type: String,
+        required: true
+    }
 }, {
     timestamps: true
 })

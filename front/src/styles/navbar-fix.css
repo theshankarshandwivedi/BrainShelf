@@ -1,0 +1,94 @@
+/* Navbar Login Button Fix - Force Visibility */
+
+/* Force show navbar auth section */
+.navbar-auth {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Force show auth buttons */
+.auth-buttons {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Force show user menu when authenticated */
+.user-menu {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-link {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.navbar-username {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Force show all buttons */
+.auth-buttons .btn {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background: #0d6efd !important;
+  color: white !important;
+  border: 1px solid #0d6efd !important;
+  min-width: 80px;
+  min-height: 44px;
+}
+
+.auth-buttons .btn:hover {
+  background: #0b5ed7 !important;
+  border-color: #0a58ca !important;
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px) {
+  .navbar-auth {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 1rem !important;
+  }
+
+  .auth-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+
+  .auth-buttons .btn {
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .user-menu {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0.75rem !important;
+  }
+
+  .profile-link {
+    width: 100% !important;
+  }
+
+  .navbar-username {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.75rem 1rem !important;
+  }
+}
