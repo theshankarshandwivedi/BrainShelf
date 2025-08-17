@@ -298,14 +298,6 @@ const ProfilePage = () => {
         <div className="profile-section">
           <div className="section-header">
             <h2>📝 About</h2>
-            {isOwnProfile && (
-              <button 
-                className="btn-edit"
-                onClick={() => toggleEditMode('about')}
-              >
-                {editMode.about ? 'Cancel' : 'Edit'}
-              </button>
-            )}
           </div>
           <div className="about-content">
             {editMode.about ? (
@@ -319,13 +311,13 @@ const ProfilePage = () => {
                 />
                 <div className="form-actions">
                   <button 
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-save btn-sm"
                     onClick={() => saveSection('about')}
                   >
                     Save
                   </button>
                   <button 
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-cancel btn-sm"
                     onClick={() => toggleEditMode('about')}
                   >
                     Cancel
@@ -333,23 +325,25 @@ const ProfilePage = () => {
                 </div>
               </div>
             ) : (
-              <>
+              <div className="section-content">
                 {user.bio ? (
                   <p className="bio-text">{user.bio}</p>
                 ) : (
                   <div className="empty-content">
                     <p className="empty-text">No bio available</p>
-                    {isOwnProfile && (
-                      <button 
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => toggleEditMode('about')}
-                      >
-                        Add Bio
-                      </button>
-                    )}
                   </div>
                 )}
-              </>
+                {isOwnProfile && (
+                  <div className="section-edit-btn">
+                    <button 
+                      className="btn btn-edit btn-sm"
+                      onClick={() => toggleEditMode('about')}
+                    >
+                      {user.bio ? 'Edit' : 'Add Bio'}
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -358,14 +352,6 @@ const ProfilePage = () => {
         <div className="profile-section">
           <div className="section-header">
             <h2>📍 Contact & Location</h2>
-            {isOwnProfile && (
-              <button 
-                className="btn-edit"
-                onClick={() => toggleEditMode('contact')}
-              >
-                {editMode.contact ? 'Cancel' : 'Edit'}
-              </button>
-            )}
           </div>
           {editMode.contact ? (
             <div className="edit-form">
@@ -393,13 +379,13 @@ const ProfilePage = () => {
               </div>
               <div className="form-actions">
                 <button 
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-save btn-sm"
                   onClick={() => saveSection('contact')}
                 >
                   Save
                 </button>
                 <button 
-                  className="btn btn-secondary btn-sm"
+                  className="btn btn-cancel btn-sm"
                   onClick={() => toggleEditMode('contact')}
                 >
                   Cancel
@@ -407,50 +393,54 @@ const ProfilePage = () => {
               </div>
             </div>
           ) : (
-            <div className="contact-grid">
-              <div className="contact-item">
-                <span className="contact-label">📧 Email</span>
-                <span className="contact-value">{user.email}</span>
+            <div className="section-content">
+              <div className="contact-grid">
+                <div className="contact-item">
+                  <span className="contact-label">📧 Email</span>
+                  <span className="contact-value">{user.email}</span>
+                </div>
+                <div className="contact-item">
+                  <span className="contact-label">📍 Location</span>
+                  <span className="contact-value">
+                    {user.location || <span className="empty-value">Not specified</span>}
+                  </span>
+                </div>
+                <div className="contact-item">
+                  <span className="contact-label">🌐 Website</span>
+                  <span className="contact-value">
+                    {user.website ? (
+                      <a href={user.website.startsWith('http') ? user.website : `https://${user.website}`} 
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                         className="website-link">
+                        {user.website}
+                      </a>
+                    ) : (
+                      <span className="empty-value">Not provided</span>
+                    )}
+                  </span>
+                </div>
+                <div className="contact-item">
+                  <span className="contact-label">📅 Member Since</span>
+                  <span className="contact-value">
+                    {new Date(user.createdAt).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </span>
+                </div>
               </div>
-              <div className="contact-item">
-                <span className="contact-label">📍 Location</span>
-                <span className="contact-value">
-                  {user.location || (
-                    <span className="empty-value">
-                      Not specified
-                      {isOwnProfile && <button className="btn-add-info" onClick={() => toggleEditMode('contact')}>+ Add</button>}
-                    </span>
-                  )}
-                </span>
-              </div>
-              <div className="contact-item">
-                <span className="contact-label">🌐 Website</span>
-                <span className="contact-value">
-                  {user.website ? (
-                    <a href={user.website.startsWith('http') ? user.website : `https://${user.website}`} 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       className="website-link">
-                      {user.website}
-                    </a>
-                  ) : (
-                    <span className="empty-value">
-                      Not provided
-                      {isOwnProfile && <button className="btn-add-info" onClick={() => toggleEditMode('contact')}>+ Add</button>}
-                    </span>
-                  )}
-                </span>
-              </div>
-              <div className="contact-item">
-                <span className="contact-label">📅 Member Since</span>
-                <span className="contact-value">
-                  {new Date(user.createdAt).toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}
-                </span>
-              </div>
+              {isOwnProfile && (
+                <div className="section-edit-btn">
+                  <button 
+                    className="btn btn-edit btn-sm"
+                    onClick={() => toggleEditMode('contact')}
+                  >
+                    Edit Contact Info
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -459,14 +449,6 @@ const ProfilePage = () => {
         <div className="profile-section">
           <div className="section-header">
             <h2>🛠️ Skills & Technologies</h2>
-            {isOwnProfile && (
-              <button 
-                className="btn-edit"
-                onClick={() => toggleEditMode('skills')}
-              >
-                {editMode.skills ? 'Cancel' : 'Edit'}
-              </button>
-            )}
           </div>
           <div className="skills-content">
             {editMode.skills ? (
@@ -482,7 +464,7 @@ const ProfilePage = () => {
                       onKeyPress={(e) => e.key === 'Enter' && addSkill()}
                     />
                     <button 
-                      className="btn btn-primary btn-sm"
+                      className="btn btn-edit btn-sm"
                       onClick={addSkill}
                     >
                       Add
@@ -504,13 +486,13 @@ const ProfilePage = () => {
                 </div>
                 <div className="form-actions">
                   <button 
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-save btn-sm"
                     onClick={() => saveSection('skills')}
                   >
                     Save
                   </button>
                   <button 
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-cancel btn-sm"
                     onClick={() => toggleEditMode('skills')}
                   >
                     Cancel
@@ -518,7 +500,7 @@ const ProfilePage = () => {
                 </div>
               </div>
             ) : (
-              <>
+              <div className="section-content">
                 {user.skills && user.skills.length > 0 ? (
                   <div className="skills-container">
                     {user.skills.map((skill, index) => (
@@ -530,17 +512,19 @@ const ProfilePage = () => {
                 ) : (
                   <div className="empty-content">
                     <p className="empty-text">No skills listed yet</p>
-                    {isOwnProfile && (
-                      <button 
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => toggleEditMode('skills')}
-                      >
-                        Add Skills
-                      </button>
-                    )}
                   </div>
                 )}
-              </>
+                {isOwnProfile && (
+                  <div className="section-edit-btn">
+                    <button 
+                      className="btn btn-edit btn-sm"
+                      onClick={() => toggleEditMode('skills')}
+                    >
+                      {user.skills && user.skills.length > 0 ? 'Edit Skills' : 'Add Skills'}
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -549,14 +533,6 @@ const ProfilePage = () => {
         <div className="profile-section">
           <div className="section-header">
             <h2>🎓 Education</h2>
-            {isOwnProfile && (
-              <button 
-                className="btn-edit"
-                onClick={() => toggleEditMode('education')}
-              >
-                {editMode.education ? 'Cancel' : 'Edit'}
-              </button>
-            )}
           </div>
           <div className="education-content">
             {editMode.education ? (
@@ -619,13 +595,13 @@ const ProfilePage = () => {
                 </div>
                 <div className="form-actions">
                   <button 
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-save btn-sm"
                     onClick={() => saveSection('education')}
                   >
                     Save
                   </button>
                   <button 
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-cancel btn-sm"
                     onClick={() => toggleEditMode('education')}
                   >
                     Cancel
@@ -633,7 +609,7 @@ const ProfilePage = () => {
                 </div>
               </div>
             ) : (
-              <>
+              <div className="section-content">
                 {user.education && (user.education.college || user.education.degree) ? (
                   <div className="education-info">
                     <div className="education-item">
@@ -648,17 +624,19 @@ const ProfilePage = () => {
                 ) : (
                   <div className="empty-content">
                     <p className="empty-text">No education information added yet</p>
-                    {isOwnProfile && (
-                      <button 
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => toggleEditMode('education')}
-                      >
-                        Add Education
-                      </button>
-                    )}
                   </div>
                 )}
-              </>
+                {isOwnProfile && (
+                  <div className="section-edit-btn">
+                    <button 
+                      className="btn btn-edit btn-sm"
+                      onClick={() => toggleEditMode('education')}
+                    >
+                      {user.education && (user.education.college || user.education.degree) ? 'Edit Education' : 'Add Education'}
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -667,14 +645,6 @@ const ProfilePage = () => {
         <div className="profile-section">
           <div className="section-header">
             <h2>💼 Professional Experience</h2>
-            {isOwnProfile && (
-              <button 
-                className="btn-edit"
-                onClick={() => toggleEditMode('experience')}
-              >
-                {editMode.experience ? 'Cancel' : 'Edit'}
-              </button>
-            )}
           </div>
           <div className="experience-content">
             {editMode.experience ? (
@@ -738,7 +708,7 @@ const ProfilePage = () => {
                     />
                   </div>
                   <button 
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-edit btn-sm"
                     onClick={addExperience}
                   >
                     Add Experience
@@ -771,13 +741,13 @@ const ProfilePage = () => {
 
                 <div className="form-actions">
                   <button 
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-save btn-sm"
                     onClick={() => saveSection('experience')}
                   >
                     Save All Changes
                   </button>
                   <button 
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-cancel btn-sm"
                     onClick={() => toggleEditMode('experience')}
                   >
                     Cancel
@@ -785,7 +755,7 @@ const ProfilePage = () => {
                 </div>
               </div>
             ) : (
-              <>
+              <div className="section-content">
                 {user.experience && user.experience.length > 0 ? (
                   <div className="experience-list">
                     {user.experience.map((exp, index) => (
@@ -804,17 +774,19 @@ const ProfilePage = () => {
                 ) : (
                   <div className="empty-content">
                     <p className="empty-text">No professional experience added yet</p>
-                    {isOwnProfile && (
-                      <button 
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => toggleEditMode('experience')}
-                      >
-                        Add Experience
-                      </button>
-                    )}
                   </div>
                 )}
-              </>
+                {isOwnProfile && (
+                  <div className="section-edit-btn">
+                    <button 
+                      className="btn btn-edit btn-sm"
+                      onClick={() => toggleEditMode('experience')}
+                    >
+                      {user.experience && user.experience.length > 0 ? 'Edit Experience' : 'Add Experience'}
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -823,14 +795,6 @@ const ProfilePage = () => {
         <div className="profile-section">
           <div className="section-header">
             <h2>🔗 Social Links</h2>
-            {isOwnProfile && (
-              <button 
-                className="btn-edit"
-                onClick={() => toggleEditMode('social')}
-              >
-                {editMode.social ? 'Cancel' : 'Edit'}
-              </button>
-            )}
           </div>
           <div className="social-content">
             {editMode.social ? (
@@ -893,13 +857,13 @@ const ProfilePage = () => {
                 </div>
                 <div className="form-actions">
                   <button 
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-save btn-sm"
                     onClick={() => saveSection('social')}
                   >
                     Save
                   </button>
                   <button 
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-cancel btn-sm"
                     onClick={() => toggleEditMode('social')}
                   >
                     Cancel
@@ -907,7 +871,7 @@ const ProfilePage = () => {
                 </div>
               </div>
             ) : (
-              <>
+              <div className="section-content">
                 {user.social && (user.social.github || user.social.linkedin || user.social.twitter || user.social.other) ? (
                   <div className="social-links">
                     {user.social.github && (
@@ -954,17 +918,19 @@ const ProfilePage = () => {
                 ) : (
                   <div className="empty-content">
                     <p className="empty-text">No social links added yet</p>
-                    {isOwnProfile && (
-                      <button 
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => toggleEditMode('social')}
-                      >
-                        Add Social Links
-                      </button>
-                    )}
                   </div>
                 )}
-              </>
+                {isOwnProfile && (
+                  <div className="section-edit-btn">
+                    <button 
+                      className="btn btn-edit btn-sm"
+                      onClick={() => toggleEditMode('social')}
+                    >
+                      {user.social && (user.social.github || user.social.linkedin || user.social.twitter || user.social.other) ? 'Edit Social Links' : 'Add Social Links'}
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
