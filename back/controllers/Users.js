@@ -22,9 +22,52 @@ exports.getUserProfile = async (req, res) => {
 exports.getUserProjects = async (req, res) => {
     try {
         const { userId } = req.params;
-        const projects = await Project.find({ token: userId })
-            .sort({ createdAt: -1 });
-
+        console.log('Fetching projects for userId:', userId);
+        
+        // First, let's get the user to see what's stored
+        const user = await User.findById(userId);
+        if (!user) {
+            console.log('User not found for ID:', userId);
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        console.log('Found user:', { id: user._id, username: user.username, name: user.name });
+        
+        // Debug: Let's see what's in the first few projects to understand the data structure
+        const sampleProjects = await Project.find({}).limit(10);
+        console.log('Sample projects structure:', sampleProjects.map(p => ({ 
+            id: p._id, 
+            name: p.name, 
+            user: p.user, 
+            token: p.token,
+            userType: typeof p.user,
+            tokenType: typeof p.token
+        })));
+        console.log('Total projects in database:', await Project.countDocuments());
+        
+        // Try multiple approaches to find projects
+        console.log('Search approaches:');
+        console.log('1. Searching by user ID:', user._id.toString());
+        console.log('2. Searching by username:', user.username);
+        console.log('3. Searching by name:', user.name);
+        // Approach 1: Search by user ObjectId (if stored as ObjectId)
+        let projects = await Project.find({ user: userId }).sort({ createdAt: -1 });
+        console.log('Projects found by userId:', projects.length);
+        
+        // Approach 2: Search by username (if stored as string)
+        if (projects.length === 0) {
+            projects = await Project.find({ user: user.username }).sort({ createdAt: -1 });
+            console.log('Projects found by username:', projects.length);
+        }
+        
+        // Approach 3: Search by user name (if stored as name)
+        if (projects.length === 0) {
+            projects = await Project.find({ user: user.name }).sort({ createdAt: -1 });
+            console.log('Projects found by user name:', projects.length);
+        }
+        
+        console.log('Total projects found:', projects.length);
+        
         res.json(projects);
     } catch (error) {
         console.error('Error fetching user projects:', error);

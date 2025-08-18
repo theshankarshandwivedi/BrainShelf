@@ -103,7 +103,9 @@ const ProfilePage = () => {
       });
       
       // Fetch user's projects
+      console.log('Fetching projects for user:', userData);
       const projects = await apiService.getUserProjects(userData._id);
+      console.log('Projects received:', projects);
       setUserProjects(projects);
       
     } catch (err) {
