@@ -68,7 +68,7 @@ const projectModel = new mongoose.Schema({
     },
     title: {
         type: String,
-        required: true
+        required: false  // Changed from required: true to avoid validation issues with existing data
     }
 }, {
     timestamps: true

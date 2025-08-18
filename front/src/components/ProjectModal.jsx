@@ -48,15 +48,37 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
 
     setLoading(true);
     try {
+      console.log('Submitting rating:', { projectId: project._id, rating: newRating, user: user });
       const response = await ApiService.rateProject(project._id, newRating);
+      console.log('Rating response:', response);
+      
       if (response.success) {
         setUserRating(newRating);
         setCurrentAverage(response.data.averageRating);
         setTotalRatings(response.data.totalRatings);
+        alert('Rating submitted successfully!');
+      } else {
+        console.error('Rating failed:', response);
+        alert(`Failed to submit rating: ${response.message || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Error submitting rating:', error);
-      alert('Failed to submit rating. Please try again.');
+      let errorMessage = 'Failed to submit rating. Please try again.';
+      
+      // More specific error messages
+      if (error.message.includes('401')) {
+        errorMessage = 'Authentication failed. Please log in again.';
+      } else if (error.message.includes('404')) {
+        errorMessage = 'Project not found.';
+      } else if (error.message.includes('400')) {
+        errorMessage = 'Invalid rating value.';
+      } else if (error.message.includes('500')) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }

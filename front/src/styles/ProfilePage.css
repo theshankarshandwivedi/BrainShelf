@@ -262,7 +262,10 @@
 /* Responsive Button Sizing */
 /* Tablet (768px and below) */
 @media (max-width: 768px) {
-  .btn, .btn-save, .btn-edit, .btn-cancel {
+  .btn,
+  .btn-save,
+  .btn-edit,
+  .btn-cancel {
     padding: 0.6rem 1.2rem;
     font-size: 0.85rem;
     border-radius: 6px;
@@ -287,7 +290,10 @@
 
 /* Mobile (480px and below) */
 @media (max-width: 480px) {
-  .btn, .btn-save, .btn-edit, .btn-cancel {
+  .btn,
+  .btn-save,
+  .btn-edit,
+  .btn-cancel {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
     border-radius: 6px;
@@ -327,7 +333,10 @@
 
 /* Extra Small Mobile (320px and below) */
 @media (max-width: 320px) {
-  .btn, .btn-save, .btn-edit, .btn-cancel {
+  .btn,
+  .btn-save,
+  .btn-edit,
+  .btn-cancel {
     padding: 0.4rem 0.8rem;
     font-size: 0.75rem;
     border-radius: 4px;
@@ -353,7 +362,10 @@
 
 /* Touch-friendly improvements */
 @media (hover: none) and (pointer: coarse) {
-  .btn, .btn-save, .btn-edit, .btn-cancel {
+  .btn,
+  .btn-save,
+  .btn-edit,
+  .btn-cancel {
     min-height: 44px; /* Apple's recommended touch target size */
     min-width: 44px;
     padding: 0.6rem 1rem;
@@ -1240,14 +1252,15 @@
   text-align: center;
 }
 
-  .section-edit-btn {
-    margin-top: 1rem;
-    text-align: center;
-  }
+.section-edit-btn {
+  margin-top: 1rem;
+  text-align: center;
+}
 
-  .section-edit-btn .btn {
-    margin: 0.5rem;
-  }.section-header {
+.section-edit-btn .btn {
+  margin: 0.5rem;
+}
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
