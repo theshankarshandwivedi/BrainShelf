@@ -55,6 +55,15 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink 
+              to="/projects" 
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+              onClick={closeMenu}
+            >
+              All Projects
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
               to="/upload" 
               className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
               onClick={closeMenu}

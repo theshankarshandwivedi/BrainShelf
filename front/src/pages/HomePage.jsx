@@ -1,6 +1,7 @@
 // src/pages/HomePage.jsx
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
 import ApiService from '../services/api';
@@ -63,11 +64,12 @@ const HomePage = () => {
     const fetchProjects = async () => {
       try {
         const response = await ApiService.getAllProjects();
-        setProjects(response.projects || []);
+        // Show only first 6 projects on home page
+        setProjects((response.projects || []).slice(0, 6));
       } catch (error) {
         console.error('Error fetching projects:', error);
-        // Fallback to dummy data
-        setProjects(dummyProjects);
+        // Fallback to dummy data, show only first 6
+        setProjects(dummyProjects.slice(0, 6));
       } finally {
         setLoading(false);
       }
@@ -104,6 +106,21 @@ const HomePage = () => {
           <p>No projects found. Be the first to upload one!</p>
         )}
       </main>
+
+      {/* See More Projects Button */}
+      {projects.length > 0 && (
+        <div className="see-more-container">
+          <Link to="/projects" className="see-more-btn">
+            <svg className="see-more-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L12 22M12 22L18 16M12 22L6 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span>See More Projects</span>
+            <svg className="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </Link>
+        </div>
+      )}
       
       <ProjectModal 
         project={selectedProject}

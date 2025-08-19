@@ -6,6 +6,7 @@ import UploadProjectPage from './pages/UploadProject';
 import ProjectCard from './components/ProjectCard';
 import Rating from './components/Rating';
 import HomePage from './pages/HomePage'; 
+import AllProjectsPage from './pages/AllProjectsPage';
 import LoginPage from './pages/LoginPage';
 import Footer from './components/Footer';
 import { AuthProvider } from './context/AuthContext';
@@ -22,6 +23,7 @@ function App() {
           <main className="main-content">
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/projects" element={<AllProjectsPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<LoginPage />} />
               <Route path="/upload" element={
