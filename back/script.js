@@ -36,6 +36,6 @@ const user = require("./routes/Routers");
 app.use("/api/v1", user);
 
 //starting the server
-app.listen(3000, () => {
-    console.log("App started at port no 3000");
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`App started at port no ${process.env.PORT || 3000}`);
 });
