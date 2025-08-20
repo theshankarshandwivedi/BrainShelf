@@ -8,10 +8,7 @@ require("dotenv").config();
 
 //cors middleware
 const cors = require("cors");
-app.use(cors({
-    origin: process.env.FRONTEND_URL, // Vite's default port
-    credentials: true
-}));
+app.use(cors());
 
 //using middleware of json
 app.use(express.json());
