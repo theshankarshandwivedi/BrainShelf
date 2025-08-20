@@ -62,6 +62,19 @@ const UploadProjectPage = () => {
         </div>
 
         <div className="form-group">
+          <label htmlFor="githubLink">GitHub Repository URL</label>
+          <input 
+            type="url" 
+            id="githubLink" 
+            name="githubLink" 
+            placeholder="https://github.com/username/repository"
+            pattern="https://github\.com/[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+"
+            title="Please enter a valid GitHub repository URL"
+          />
+          <small className="form-help">Optional: Link to your project's GitHub repository</small>
+        </div>
+
+        <div className="form-group">
           <label htmlFor="imgFile">Project Image</label>
           <input type="file" id="imgFile" name="imgFile" accept="image/*" required />
         </div>

@@ -17,6 +17,10 @@ const projectModel = new mongoose.Schema({
         type: String,
         required: true,
     },
+    githubLink: {
+        type: String,
+        required: false
+    },
     image: {
         type: String,
         required: true,

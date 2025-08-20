@@ -16,16 +16,27 @@ async function uploadToCloud(file, folder, quality) {
 exports.projectReg = async (req, res) => {
     try {
         
-        const { name, description, link, user, tags } = req.body;
+        const { name, description, link, user, tags, githubLink } = req.body;
         
         console.log(req.body);
+        
+        // Validate GitHub URL if provided
+        if (githubLink && githubLink.trim() !== '') {
+            const githubUrlPattern = /^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+\/?$/;
+            if (!githubUrlPattern.test(githubLink)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid GitHub repository URL. Please provide a valid GitHub repository link."
+                });
+            }
+        }
         
         const file = req.files.imgFile;
 
         
 
         
-        console.log(name, description, link);
+        console.log(name, description, link, githubLink);
         
 
 
@@ -40,6 +51,7 @@ exports.projectReg = async (req, res) => {
         const project = await Project.create({
             name,
             description,
+            githubLink: githubLink && githubLink.trim() !== '' ? githubLink.trim() : null, // Clean and store GitHub link
             image,
             averageRating: 0,
             totalRatings: 0,

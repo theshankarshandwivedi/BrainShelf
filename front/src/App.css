@@ -221,8 +221,8 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(128, 43, 177, 0.9);
-  color: var(--color-surface);
+  background: rgba(75, 85, 99, 0.9); /* Gray background */
+  color: #ffffff; /* White text */
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -237,9 +237,9 @@
 .all-projects-page .project-card-author-overlay:hover,
 .homepage .project-card-author-overlay:hover,
 .profile-page .project-card-author-overlay:hover {
-  background: rgba(128, 43, 177, 1);
+  background: rgba(55, 65, 81, 1); /* Darker gray on hover */
   transform: scale(1.05);
-  color: var(--color-surface);
+  color: #ffffff; /* Keep white text on hover */
 }
 
 .project-card-body {
@@ -550,6 +550,52 @@
   font-size: 0.9rem;
   display: block;
   margin-bottom: 10px;
+}
+
+.project-github-link {
+  margin-bottom: 10px;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgb(89, 78, 78);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(128, 43, 177, 0.2);
+}
+
+.github-link:hover {
+  background: #6b1f94;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(128, 43, 177, 0.3);
+  color: white;
+  text-decoration: none;
+}
+
+.github-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .github-link {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    gap: 5px;
+  }
+  
+  .github-icon {
+    width: 14px;
+    height: 14px;
+  }
 }
 
 .project-tags {
