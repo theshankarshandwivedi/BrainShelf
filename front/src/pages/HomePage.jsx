@@ -64,12 +64,12 @@ const HomePage = () => {
     const fetchProjects = async () => {
       try {
         const response = await ApiService.getAllProjects();
-        // Show only first 6 projects on home page
-        setProjects((response.projects || []).slice(0, 6));
+        // Show only first 4 projects on home page
+        setProjects((response.projects || []).slice(0, 4));
       } catch (error) {
         console.error('Error fetching projects:', error);
-        // Fallback to dummy data, show only first 6
-        setProjects(dummyProjects.slice(0, 6));
+        // Fallback to dummy data, show only first 4
+        setProjects(dummyProjects.slice(0, 4));
       } finally {
         setLoading(false);
       }
