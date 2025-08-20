@@ -89,11 +89,54 @@
   background-color: var(--color-surface);
 }
 
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+.all-projects-page .projects-grid {
+  display: grid !important;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(400px, 1fr)
+  ) !important; /* Match main app grid */
+  gap: 28px !important; /* Match main app gap */
   margin-bottom: 2rem;
+}
+
+/* Ensure project cards have consistent width */
+.all-projects-page .project-card {
+  min-width: 400px !important;
+  width: 100% !important;
+}
+
+/* Responsive grid to match main App.css */
+@media (max-width: 768px) {
+  .all-projects-page .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .all-projects-page .project-card {
+    min-width: auto !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .all-projects-page .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)) !important;
+    gap: 20px !important;
+  }
+
+  .all-projects-page .project-card {
+    min-width: 380px !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  .all-projects-page .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)) !important;
+    gap: 28px !important;
+  }
+
+  .all-projects-page .project-card {
+    min-width: 400px !important;
+  }
 }
 
 .no-projects {
@@ -118,26 +161,26 @@
   .all-projects-page {
     padding: 1rem 0.5rem;
   }
-  
+
   .page-header h1 {
     font-size: 2rem;
   }
-  
+
   .projects-controls {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
-  
+
   .search-container {
     max-width: none;
   }
-  
+
   .projects-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
   }
-  
+
   .sort-select {
     min-width: auto;
   }
@@ -147,7 +190,7 @@
   .page-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .page-header p {
     font-size: 1rem;
   }

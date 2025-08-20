@@ -85,13 +85,11 @@ const HomePage = () => {
   return (
     <div className="homepage-container">
       <div>
-      <h1>Welcome to BrainShelf</h1>
-      <p>Your one-stop solution for all your project needs.</p>
-    </div>
+        <h1>Welcome to BrainShelf</h1>
+        <p>Your hub for discovering, sharing, and showcasing innovative developer projects.</p>
+      </div>
       <header className="homepage-header">
-        <h1>Discover Amazing Projects</h1>
-        <p>Explore projects from developers and designers around the world.</p>
-        {/* You can add a search bar here */}
+        
       </header>
       <main className="project-grid">
         {projects.length > 0 ? (
