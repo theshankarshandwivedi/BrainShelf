@@ -9,7 +9,7 @@ require("dotenv").config();
 //cors middleware
 const cors = require("cors");
 app.use(cors({
-    origin: "http://localhost:5173", // Vite's default port
+    origin: process.env.FRONTEND_URL, // Vite's default port
     credentials: true
 }));
 
