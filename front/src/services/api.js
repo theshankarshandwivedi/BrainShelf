@@ -1,5 +1,5 @@
 // src/services/api.js
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL + '/api/v1';
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 class ApiService {
   async request(endpoint, options = {}) {
