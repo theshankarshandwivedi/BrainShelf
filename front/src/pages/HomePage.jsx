@@ -108,7 +108,7 @@ const HomePage = () => {
       {/* See More Projects Button */}
       {projects.length > 0 && (
         <div className="see-more-container">
-          <Link to="/projects" className="see-more-btn">
+          <Link to="/projects" className="button-32">
             <svg className="see-more-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M12 2L12 22M12 22L18 16M12 22L6 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>

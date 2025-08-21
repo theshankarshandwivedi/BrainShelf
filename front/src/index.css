@@ -211,15 +211,21 @@ body {
 
 .nav-link {
   text-decoration: none;
-  color: #495057;
+  color: #212529;
   font-weight: 500;
   transition: color 0.2s;
-  padding: 0.5rem 0;
+  padding: 0.5rem 0.5rem;
+  /* background-color: rgba(16, 16, 210, 0.865); */
+  border: 2px solid transparent;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
 }
 
 .nav-link:hover,
 .nav-link.active {
   color: #0d6efd;
+
+  /* background-color: #0d6efd; */
 }
 
 .navbar-username {
@@ -434,6 +440,32 @@ body {
 .auth-switch {
   text-align: center;
   margin-top: 1.5rem;
+}
+
+/* Logout button css */
+
+.button-33 {
+  background-color: #fbcdc2;
+  border-radius: 100px;
+  box-shadow: rgba(187, 65, 44, 0.2) 0 -25px 18px -14px inset,rgba(187, 65, 44, 0.2) 0 1px 2px,rgba(187, 65, 44, 0.2) 0 2px 4px,rgba(187, 65, 44, 0.2) 0 4px 8px,rgba(187, 65, 44, 0.2) 0 8px 16px,rgba(187, 65, 44, 0.2) 0 16px 32px;
+  color: red;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-33:hover {
+  box-shadow: rgba(187, 65, 44,.35) 0 -25px 18px -14px inset,rgba(187, 65, 44,.25) 0 1px 2px,rgba(187, 65, 44,.25) 0 2px 4px,rgba(187, 65, 44,.25) 0 4px 8px,rgba(187, 65, 44,.25) 0 8px 16px,rgba(187, 65, 44,.25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
 }
 
 /* --- Project Grid (HomePage) --- */
