@@ -19,7 +19,7 @@ const FollowButton = ({ userId, initialFollowStatus = false, onFollowChange }) =
     }, [userId]);
 
     useEffect(() => {
-        if (isAuthenticated && currentUser && userId && currentUser.id !== userId) {
+        if (isAuthenticated && currentUser && userId && (currentUser.id !== userId && currentUser._id !== userId)) {
             checkFollowStatus();
         }
     }, [userId, currentUser, isAuthenticated, checkFollowStatus]);
@@ -60,7 +60,17 @@ const FollowButton = ({ userId, initialFollowStatus = false, onFollowChange }) =
     };
 
     // Don't show follow button for current user or if not authenticated
-    if (!isAuthenticated || !currentUser || currentUser.id === userId) {
+    const isOwnProfile = currentUser && (currentUser.id === userId || currentUser._id === userId);
+    
+    // Debug logging
+    console.log('FollowButton Debug:', {
+        isAuthenticated,
+        currentUser: currentUser ? { id: currentUser.id, _id: currentUser._id } : null,
+        userId,
+        isOwnProfile
+    });
+    
+    if (!isAuthenticated || !currentUser || isOwnProfile) {
         return null;
     }
 

@@ -141,7 +141,7 @@ const ProfilePage = () => {
   };
 
   // Follow status change handler
-  const handleFollowChange = ({ isFollowing, followersCount: newCount }) => {
+  const handleFollowChange = ({ followersCount: newCount }) => {
     if (newCount !== undefined) {
       setFollowersCount(newCount);
       // Update user object as well
