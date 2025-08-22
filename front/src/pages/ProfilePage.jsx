@@ -4,6 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import apiService from '../services/api';
 import ProjectCard from '../components/ProjectCard';
+import FollowButton from '../components/FollowButton';
+import FollowersModal from '../components/FollowersModal';
 import '../styles/ProfilePage.css';
 
 const ProfilePage = () => {
@@ -57,6 +59,14 @@ const ProfilePage = () => {
     description: ''
   });
 
+  // Modal states
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState('followers'); // 'followers' or 'following'
+  
+  // Follow state
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+
   // If no username in params and user is authenticated, redirect to their profile
   useEffect(() => {
     if (!username && currentUser?.username) {
@@ -80,6 +90,10 @@ const ProfilePage = () => {
       // Fetch user data
       const userData = await apiService.getUserProfile(targetUsername);
       setUser(userData);
+      
+      // Set follower/following counts
+      setFollowersCount(userData.followers || 0);
+      setFollowingCount(userData.following || 0);
       
       // Populate form data with user data
       setFormData({
@@ -115,6 +129,28 @@ const ProfilePage = () => {
       setLoading(false);
     }
   }, [username, currentUser?.username]);
+
+  // Modal handlers
+  const handleOpenModal = (type) => {
+    setModalType(type);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  // Follow status change handler
+  const handleFollowChange = ({ isFollowing, followersCount: newCount }) => {
+    if (newCount !== undefined) {
+      setFollowersCount(newCount);
+      // Update user object as well
+      setUser(prev => ({
+        ...prev,
+        followers: newCount
+      }));
+    }
+  };
 
   // Edit helper functions
   const toggleEditMode = (section) => {
@@ -284,15 +320,23 @@ const ProfilePage = () => {
                 <span className="stat-number">{userProjects.length}</span>
                 <span className="stat-label">Projects</span>
               </div>
-              <div className="stat">
-                <span className="stat-number">{user.followers || 0}</span>
+              <div className="stat stat-item clickable" onClick={() => handleOpenModal('followers')}>
+                <span className="stat-number">{followersCount}</span>
                 <span className="stat-label">Followers</span>
               </div>
-              <div className="stat">
-                <span className="stat-number">{user.following || 0}</span>
+              <div className="stat stat-item clickable" onClick={() => handleOpenModal('following')}>
+                <span className="stat-number">{followingCount}</span>
                 <span className="stat-label">Following</span>
               </div>
             </div>
+
+            {/* Follow Button */}
+            {user && user._id && (
+              <FollowButton
+                userId={user._id}
+                onFollowChange={handleFollowChange}
+              />
+            )}
           </div>
         </div>
 
@@ -962,6 +1006,15 @@ const ProfilePage = () => {
           )}
         </div>
       </div>
+
+      {/* Followers/Following Modal */}
+      <FollowersModal
+        isOpen={modalOpen}
+        onClose={handleCloseModal}
+        userId={user?._id}
+        type={modalType}
+        username={user?.username}
+      />
     </div>
   );
 };

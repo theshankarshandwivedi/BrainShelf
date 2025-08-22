@@ -7,6 +7,8 @@ const {projectReg} = require("../controllers/RegisterProject");
 const {getAllProjects, getProjectById} = require("../controllers/Projects");
 const {rateProject, getUserRating, getProjectRatings} = require("../controllers/Rating");
 const {getUserProfile, getUserProjects, updateUserProfile, uploadAvatar} = require("../controllers/Users");
+const {followUser, unfollowUser, getFollowStatus, getFollowers, getFollowing} = require("../controllers/Follow");
+const {authenticateToken} = require("../middleware/auth");
 
 // Auth routes
 router.post("/register", registerControll);
@@ -27,5 +29,12 @@ router.get("/users/:username", getUserProfile);
 router.get("/users/:userId/projects", getUserProjects);
 router.put("/users/:userId", updateUserProfile);
 router.post("/users/:userId/avatar", uploadAvatar);
+
+// Follow routes (protected)
+router.post("/users/:userIdToFollow/follow", authenticateToken, followUser);
+router.delete("/users/:userIdToUnfollow/unfollow", authenticateToken, unfollowUser);
+router.get("/users/:userId/follow-status", authenticateToken, getFollowStatus);
+router.get("/users/:userId/followers", getFollowers);
+router.get("/users/:userId/following", getFollowing);
 
 module.exports = router;

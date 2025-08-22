@@ -107,7 +107,7 @@ const LoginPage = () => {
               <input type="password" id="confirmPassword" name="confirmPassword" required />
             </div>
           )}
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className=" button-32">
             {isLogin ? 'Login' : 'Sign Up'}
           </button>
         </form>

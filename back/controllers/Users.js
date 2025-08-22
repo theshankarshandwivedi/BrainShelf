@@ -11,7 +11,14 @@ exports.getUserProfile = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json(user);
+        // Return user data with follower/following counts
+        const userData = {
+            ...user.toObject(),
+            followers: user.followerCount || 0,
+            following: user.followingCount || 0
+        };
+
+        res.json(userData);
     } catch (error) {
         console.error('Error fetching user profile:', error);
         res.status(500).json({ message: 'Server error' });

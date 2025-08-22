@@ -138,6 +138,31 @@ class ApiService {
 
     return data;
   }
+
+  // Follow/Unfollow methods
+  async followUser(userId) {
+    return this.request(`/users/${userId}/follow`, {
+      method: 'POST',
+    });
+  }
+
+  async unfollowUser(userId) {
+    return this.request(`/users/${userId}/unfollow`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getFollowStatus(userId) {
+    return this.request(`/users/${userId}/follow-status`);
+  }
+
+  async getFollowers(userId, page = 1, limit = 20) {
+    return this.request(`/users/${userId}/followers?page=${page}&limit=${limit}`);
+  }
+
+  async getFollowing(userId, page = 1, limit = 20) {
+    return this.request(`/users/${userId}/following?page=${page}&limit=${limit}`);
+  }
 }
 
 export default new ApiService();
