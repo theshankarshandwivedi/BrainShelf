@@ -429,7 +429,7 @@
   align-items: center;
   z-index: 1000;
   padding: 20px;
-  
+  scroll-behavior:auto;
 }
 
 @media (max-width: 768px) {
@@ -449,6 +449,7 @@
   overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   margin: auto;
+  padding: 20px;
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   scrollbar-width: none; /* Firefox */
