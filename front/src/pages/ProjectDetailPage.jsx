@@ -1,27 +1,7 @@
-// src/pages/ProjectDetailPage.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Rating from '../components/Rating';
-
-// Dummy data for a single project
-const dummyProjectDetails = {
-  _id: '1',
-  name: 'AI-Powered Chatbot',
-  image: 'https://via.placeholder.com/800x600',
-  rating: 4.5,
-  user: {
-    name: 'Jane Doe',
-    username: 'janedoe',
-    educationalDetails: 'M.S. in Computer Science, Stanford University',
-  },
-  description: {
-    short: 'A chatbot using NLP to understand user queries.',
-    long: 'This project is a sophisticated AI-powered chatbot built with the MERN stack and integrated with the Dialogflow API for natural language processing. It features real-time communication via WebSockets, user authentication, and a dashboard for analyzing conversation logs. The goal was to create a seamless and intelligent conversational agent for customer support applications.'
-  },
-  tags: ['AI', 'React', 'Node.js', 'WebSocket', 'Dialogflow'],
-};
-
+import ApiService from '../services/api';
 
 const ProjectDetailPage = () => {
   const { id } = useParams(); // Gets the project ID from the URL (e.g., /project/1)
@@ -33,13 +13,23 @@ const ProjectDetailPage = () => {
   const isAuthenticated = true;
 
   useEffect(() => {
-    // Fetch project details from `/api/projects/${id}`
-    setLoading(true);
-    // Simulating API call
-    setTimeout(() => {
-      setProject(dummyProjectDetails);
-      setLoading(false);
-    }, 500);
+    const fetchProject = async () => {
+      setLoading(true);
+      try {
+        const response = await ApiService.getProject(id);
+        setProject(response.project);
+      } catch (error) {
+        console.error('Error fetching project:', error);
+        // Handle error - maybe navigate back or show error message
+        setProject(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchProject();
+    }
   }, [id]);
 
   const handleRatingSubmit = (newRating) => {

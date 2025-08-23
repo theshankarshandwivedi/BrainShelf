@@ -16,9 +16,17 @@ async function uploadToCloud(file, folder, quality) {
 exports.projectReg = async (req, res) => {
     try {
         
-        const { name, description, link, user, tags, githubLink } = req.body;
+        const { name, description, link, user, tags: rawTags, githubLink } = req.body;
         
         console.log(req.body);
+        
+        // Parse tags if it's a JSON string
+        let tags;
+        try {
+            tags = typeof rawTags === 'string' ? JSON.parse(rawTags) : rawTags;
+        } catch (error) {
+            tags = [];
+        }
         
         // Validate GitHub URL if provided
         if (githubLink && githubLink.trim() !== '') {

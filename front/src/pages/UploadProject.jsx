@@ -9,13 +9,13 @@ const UploadProjectPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [tags, setTags] = useState([]);
-  const [tagInput, setTagInput] = useState('');
+  const [tagInput, setTagInput] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleTagInput = (e) => {
-    if (e.key === ' ' || e.key === 'Enter') {
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (tagInput && !tags.includes(tagInput)) {
+      if (tagInput.trim() && !tags.includes(tagInput.trim())) {
         setTags([...tags, tagInput.trim()]);
       }
       setTagInput('');
@@ -36,7 +36,7 @@ const UploadProjectPage = () => {
       // Add additional fields
       formData.append('user', user?.username || 'Anonymous');
       formData.append('tags', JSON.stringify(tags));
-      
+
       await ApiService.uploadProject(formData);
       alert('Project uploaded successfully!');
       navigate('/');

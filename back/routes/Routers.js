@@ -4,7 +4,7 @@ const router = express.Router();
 const {registerControll} = require("../controllers/Register");
 const {loginController} = require("../controllers/Login");
 const {projectReg} = require("../controllers/RegisterProject");
-const {getAllProjects, getProjectById} = require("../controllers/Projects");
+const {getAllProjects, getProjectById, deleteProject} = require("../controllers/Projects");
 const {rateProject, getUserRating, getProjectRatings} = require("../controllers/Rating");
 const {getUserProfile, getUserProjects, updateUserProfile, uploadAvatar} = require("../controllers/Users");
 const {followUser, unfollowUser, getFollowStatus, getFollowers, getFollowing} = require("../controllers/Follow");
@@ -18,6 +18,7 @@ router.post("/login", loginController);
 router.post("/projects", projectReg);
 router.get("/projects", getAllProjects);
 router.get("/projects/:id", getProjectById);
+router.delete("/projects/:id", authenticateToken, deleteProject);
 
 // Rating routes
 router.post("/projects/:projectId/rate", rateProject);

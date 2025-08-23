@@ -84,6 +84,12 @@ class ApiService {
     return data;
   }
 
+  async deleteProject(projectId) {
+    return this.request(`/projects/${projectId}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Rating methods
   async rateProject(projectId, rating) {
     return this.request(`/projects/${projectId}/rate`, {

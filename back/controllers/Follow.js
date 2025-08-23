@@ -139,6 +139,7 @@ exports.getFollowStatus = async (req, res) => {
     try {
         const { userId } = req.params;
         const currentUserId = req.user.id;
+        console.log(req.params);
 
         const currentUser = await User.findById(currentUserId);
         

@@ -1,69 +1,9 @@
-// src/pages/AllProjectsPage.jsx
-
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
 import ApiService from '../services/api';
 import './AllProjectsPage.css';
-
-// Dummy data fallback
-const dummyProjects = [
-  { 
-    _id: '1', 
-    name: 'AI-Powered Chatbot', 
-    image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    averageRating: 4.5,
-    totalRatings: 12,
-    ratings: [],
-    user: 'janedoe', 
-    description: 'A chatbot using NLP to understand user queries. This project is a sophisticated AI-powered chatbot built with the MERN stack and integrated with the Dialogflow API for natural language processing.',
-    tags: ['AI', 'React', 'Node.js'] 
-  },
-  { 
-    _id: '2', 
-    name: 'E-commerce Platform', 
-    image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    averageRating: 4.8,
-    totalRatings: 25,
-    ratings: [],
-    user: 'johnsmith', 
-    description: 'A full-stack e-commerce site with payment integration. A comprehensive e-commerce platform built with the MERN stack featuring user authentication and payment processing.',
-    tags: ['MERN', 'Stripe'] 
-  },
-  { 
-    _id: '3', 
-    name: 'Portfolio Website Builder', 
-    image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    averageRating: 4.2,
-    totalRatings: 8,
-    ratings: [],
-    user: 'dev_user', 
-    description: 'A tool to quickly generate and deploy portfolio websites. A drag-and-drop portfolio website builder that allows developers and designers to create professional portfolios.',
-    tags: ['Next.js', 'Vercel'] 
-  },
-  { 
-    _id: '4', 
-    name: 'Weather App', 
-    image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    averageRating: 3.9,
-    totalRatings: 15,
-    ratings: [],
-    user: 'weatherdev', 
-    description: 'A responsive weather application with location-based forecasts.',
-    tags: ['React', 'API'] 
-  },
-  { 
-    _id: '5', 
-    name: 'Task Management Tool', 
-    image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    averageRating: 4.6,
-    totalRatings: 20,
-    ratings: [],
-    user: 'productivityguru', 
-    description: 'A collaborative task management platform with real-time updates.',
-    tags: ['Vue.js', 'Socket.io'] 
-  },
-];
 
 const AllProjectsPage = () => {
   const [projects, setProjects] = useState([]);
@@ -72,6 +12,25 @@ const AllProjectsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
+  const [searchParams] = useSearchParams();
+
+  // Initialize search term from URL params
+  useEffect(() => {
+    const searchFromUrl = searchParams.get('search');
+    if (searchFromUrl) {
+      setSearchTerm(searchFromUrl);
+    }
+  }, [searchParams]);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    // Update URL without causing a navigation
+    const newUrl = value ? 
+      `${window.location.pathname}?search=${encodeURIComponent(value)}` : 
+      window.location.pathname;
+    window.history.replaceState(null, '', newUrl);
+  };
 
   const handleProjectClick = (project) => {
     setSelectedProject(project);
@@ -83,6 +42,17 @@ const AllProjectsPage = () => {
     setSelectedProject(null);
   };
 
+  const handleProjectDeleted = (deletedProjectId) => {
+    // Remove the deleted project from the list
+    setProjects(prevProjects => 
+      prevProjects.filter(project => project._id !== deletedProjectId)
+    );
+    // Close modal if the deleted project was selected
+    if (selectedProject && selectedProject._id === deletedProjectId) {
+      handleCloseModal();
+    }
+  };
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -90,8 +60,8 @@ const AllProjectsPage = () => {
         setProjects(response.projects || []);
       } catch (error) {
         console.error('Error fetching projects:', error);
-        // Fallback to dummy data
-        setProjects(dummyProjects);
+        // No fallback - show empty state
+        setProjects([]);
       } finally {
         setLoading(false);
       }
@@ -138,7 +108,7 @@ const AllProjectsPage = () => {
             type="text"
             placeholder="Search projects..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             className="search-input"
           />
           <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -164,6 +134,7 @@ const AllProjectsPage = () => {
               key={project._id} 
               project={project} 
               onClick={handleProjectClick}
+              onProjectDeleted={handleProjectDeleted}
             />
           ))
         ) : (

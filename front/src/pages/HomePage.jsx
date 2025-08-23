@@ -1,48 +1,8 @@
-// src/pages/HomePage.jsx
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectCard from '../components/ProjectCard';
 import ProjectModal from '../components/ProjectModal';
 import ApiService from '../services/api';
-
-// Dummy data to simulate API response
-const dummyProjects = [
-  { 
-    _id: '1', 
-    name: 'AI-Powered Chatbot', 
-    image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    averageRating: 4.5,
-    totalRatings: 12,
-    ratings: [],
-    user: 'janedoe', 
-    description: 'A chatbot using NLP to understand user queries. This project is a sophisticated AI-powered chatbot built with the MERN stack and integrated with the Dialogflow API for natural language processing.',
-    tags: ['AI', 'React', 'Node.js'] 
-  },
-  { 
-    _id: '2', 
-    name: 'E-commerce Platform', 
-    image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    averageRating: 4.8,
-    totalRatings: 25,
-    ratings: [],
-    user: 'johnsmith', 
-    description: 'A full-stack e-commerce site with payment integration. A comprehensive e-commerce platform built with the MERN stack featuring user authentication and payment processing.',
-    tags: ['MERN', 'Stripe'] 
-  },
-  { 
-    _id: '3', 
-    name: 'Portfolio Website Builder', 
-    image: 'https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=', 
-    averageRating: 4.2,
-    totalRatings: 8,
-    ratings: [],
-    user: 'dev_user', 
-    description: 'A tool to quickly generate and deploy portfolio websites. A drag-and-drop portfolio website builder that allows developers and designers to create professional portfolios.',
-    tags: ['Next.js', 'Vercel'] 
-  },
-];
-
 
 const HomePage = () => {
   const [projects, setProjects] = useState([]);
@@ -60,6 +20,17 @@ const HomePage = () => {
     setSelectedProject(null);
   };
 
+  const handleProjectDeleted = (deletedProjectId) => {
+    // Remove the deleted project from the list
+    setProjects(prevProjects => 
+      prevProjects.filter(project => project._id !== deletedProjectId)
+    );
+    // Close modal if the deleted project was selected
+    if (selectedProject && selectedProject._id === deletedProjectId) {
+      handleCloseModal();
+    }
+  };
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -68,8 +39,8 @@ const HomePage = () => {
         setProjects((response.projects || []).slice(0, 4));
       } catch (error) {
         console.error('Error fetching projects:', error);
-        // Fallback to dummy data, show only first 4
-        setProjects(dummyProjects.slice(0, 4));
+        // No fallback - show empty state
+        setProjects([]);
       } finally {
         setLoading(false);
       }
@@ -98,6 +69,7 @@ const HomePage = () => {
               key={project._id} 
               project={project} 
               onClick={handleProjectClick}
+              onProjectDeleted={handleProjectDeleted}
             />
           ))
         ) : (
