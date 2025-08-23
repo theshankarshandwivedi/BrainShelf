@@ -90,7 +90,8 @@ const ProfilePage = () => {
       // Fetch user data
       const userData = await apiService.getUserProfile(targetUsername);
       setUser(userData);
-      
+      // console.log("This is user data", userData);
+
       // Set follower/following counts
       setFollowersCount(userData.followers || 0);
       setFollowingCount(userData.following || 0);
@@ -117,7 +118,7 @@ const ProfilePage = () => {
       });
       
       // Fetch user's projects
-      console.log('Fetching projects for user:', userData);
+      // console.log('Fetching projects for user:', userData);
       const projects = await apiService.getUserProjects(userData._id);
       console.log('Projects received:', projects);
       setUserProjects(projects);

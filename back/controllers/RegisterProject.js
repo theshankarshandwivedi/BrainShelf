@@ -43,10 +43,6 @@ exports.projectReg = async (req, res) => {
 
         
 
-        
-        console.log(name, description, link, githubLink);
-        
-
 
         //upload to cloudinary
         const response = await uploadToCloud(file, "ourProject");
@@ -67,6 +63,16 @@ exports.projectReg = async (req, res) => {
             user,
             tags
         })
+
+        const resp = await User.findOneAndUpdate(
+            {username: user},
+            {$push: {projects: project._id}},
+            {new: true}
+        );
+
+        console.log(resp);
+
+        console.log("This is project", project);
         return res.status(200).json({
             success: true,
             message: "Successfully uploaded the project",

@@ -137,9 +137,9 @@ exports.unfollowUser = async (req, res) => {
 // Get follow status
 exports.getFollowStatus = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const { userId } = req.body;
         const currentUserId = req.user.id;
-        console.log(req.params);
+        console.log("This is response req.body:", req.body);
 
         const currentUser = await User.findById(currentUserId);
         

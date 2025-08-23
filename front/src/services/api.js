@@ -17,13 +17,13 @@ class ApiService {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    console.log('API Request:', { url, method: config.method || 'GET', headers: config.headers });
+    // console.log('API Request:', { url, method: config.method || 'GET', headers: config.headers });
 
     try {
       const response = await fetch(url, config);
       const data = await response.json();
 
-      console.log('API Response:', { status: response.status, data });
+      // console.log('API Response:', { status: response.status, data });
 
       if (!response.ok) {
         throw new Error(`${response.status}: ${data.message || 'API request failed'}`);
