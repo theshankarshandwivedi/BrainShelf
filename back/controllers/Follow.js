@@ -6,6 +6,14 @@ exports.followUser = async (req, res) => {
         const { userIdToFollow } = req.params;
         const currentUserId = req.user._id; // Fixed: use _id instead of id
 
+        // Validate userIdToFollow format
+        if (!userIdToFollow.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID format"
+            });
+        }
+
         // Prevent self-following
         if (currentUserId.toString() === userIdToFollow) {
             return res.status(400).json({
@@ -27,8 +35,9 @@ exports.followUser = async (req, res) => {
             });
         }
 
-        // Check if already following
-        if (currentUser.following.includes(userIdToFollow)) {
+        // Check if already following - convert ObjectIds to strings for comparison
+        const followingStrings = currentUser.following.map(id => id.toString());
+        if (followingStrings.includes(userIdToFollow)) {
             return res.status(400).json({
                 success: false,
                 message: "You are already following this user"
@@ -77,6 +86,14 @@ exports.unfollowUser = async (req, res) => {
         const { userIdToUnfollow } = req.params;
         const currentUserId = req.user._id; // Fixed: use _id instead of id
 
+        // Validate userIdToUnfollow format
+        if (!userIdToUnfollow.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID format"
+            });
+        }
+
         // Check if users exist
         const [currentUser, userToUnfollow] = await Promise.all([
             User.findById(currentUserId),
@@ -90,8 +107,9 @@ exports.unfollowUser = async (req, res) => {
             });
         }
 
-        // Check if currently following
-        if (!currentUser.following.includes(userIdToUnfollow)) {
+        // Check if currently following - convert ObjectIds to strings for comparison
+        const followingStrings = currentUser.following.map(id => id.toString());
+        if (!followingStrings.includes(userIdToUnfollow)) {
             return res.status(400).json({
                 success: false,
                 message: "You are not following this user"
@@ -139,20 +157,33 @@ exports.getFollowStatus = async (req, res) => {
     try {
         const { userId } = req.params;
         const currentUserId = req.user._id; // Fixed: use _id instead of id
-        console.log("This is response req.body:", req.params);
-        console.log("This is current user ID:", currentUserId);
+        console.log("Checking follow status for userId:", userId);
+        console.log("Current user ID:", currentUserId);
+
+        // Validate userId format
+        if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID format"
+            });
+        }
 
         const currentUser = await User.findById(currentUserId);
         
         if (!currentUser) {
             return res.status(404).json({
                 success: false,
-                message: "User not found"
+                message: "Current user not found"
             });
         }
 
-        const isFollowing = currentUser.following.includes(userId);
-        console.log("This is response isFollowing:", isFollowing);
+        // Convert following array to strings for comparison
+        const followingStrings = currentUser.following.map(id => id.toString());
+        const isFollowing = followingStrings.includes(userId);
+        
+        console.log("Following list:", followingStrings);
+        console.log("Is following:", isFollowing);
+        
         return res.status(200).json({
             success: true,
             data: {
