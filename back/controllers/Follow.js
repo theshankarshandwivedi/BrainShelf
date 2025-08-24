@@ -35,6 +35,11 @@ exports.followUser = async (req, res) => {
             });
         }
 
+        // Initialize following array if it doesn't exist
+        if (!currentUser.following) {
+            currentUser.following = [];
+        }
+
         // Check if already following - convert ObjectIds to strings for comparison
         const followingStrings = currentUser.following.map(id => id.toString());
         if (followingStrings.includes(userIdToFollow)) {
@@ -107,6 +112,11 @@ exports.unfollowUser = async (req, res) => {
             });
         }
 
+        // Initialize following array if it doesn't exist
+        if (!currentUser.following) {
+            currentUser.following = [];
+        }
+
         // Check if currently following - convert ObjectIds to strings for comparison
         const followingStrings = currentUser.following.map(id => id.toString());
         if (!followingStrings.includes(userIdToUnfollow)) {
@@ -175,6 +185,11 @@ exports.getFollowStatus = async (req, res) => {
                 success: false,
                 message: "Current user not found"
             });
+        }
+
+        // Initialize following array if it doesn't exist
+        if (!currentUser.following) {
+            currentUser.following = [];
         }
 
         // Convert following array to strings for comparison
