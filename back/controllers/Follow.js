@@ -4,10 +4,10 @@ const User = require("../models/User");
 exports.followUser = async (req, res) => {
     try {
         const { userIdToFollow } = req.params;
-        const currentUserId = req.user.id; // Assuming you have auth middleware
+        const currentUserId = req.user._id; // Fixed: use _id instead of id
 
         // Prevent self-following
-        if (currentUserId === userIdToFollow) {
+        if (currentUserId.toString() === userIdToFollow) {
             return res.status(400).json({
                 success: false,
                 message: "You cannot follow yourself"
@@ -75,7 +75,7 @@ exports.followUser = async (req, res) => {
 exports.unfollowUser = async (req, res) => {
     try {
         const { userIdToUnfollow } = req.params;
-        const currentUserId = req.user.id;
+        const currentUserId = req.user._id; // Fixed: use _id instead of id
 
         // Check if users exist
         const [currentUser, userToUnfollow] = await Promise.all([
@@ -137,9 +137,10 @@ exports.unfollowUser = async (req, res) => {
 // Get follow status
 exports.getFollowStatus = async (req, res) => {
     try {
-        const { userId } = req.body;
-        const currentUserId = req.user.id;
-        console.log("This is response req.body:", req.body);
+        const { userId } = req.params;
+        const currentUserId = req.user._id; // Fixed: use _id instead of id
+        console.log("This is response req.body:", req.params);
+        console.log("This is current user ID:", currentUserId);
 
         const currentUser = await User.findById(currentUserId);
         
@@ -151,7 +152,7 @@ exports.getFollowStatus = async (req, res) => {
         }
 
         const isFollowing = currentUser.following.includes(userId);
-
+        console.log("This is response isFollowing:", isFollowing);
         return res.status(200).json({
             success: true,
             data: {

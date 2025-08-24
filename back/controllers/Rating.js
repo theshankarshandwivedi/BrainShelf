@@ -38,7 +38,7 @@ exports.rateProject = [authenticateToken, async (req, res) => {
     try {
         const { projectId } = req.params;
         const { rating } = req.body;
-        const userId = req.user.id;
+        const userId = req.user._id; // Fixed: use _id instead of id
 
         console.log('Rating request:', { projectId, rating, userId, user: req.user });
 
@@ -139,7 +139,7 @@ exports.rateProject = [authenticateToken, async (req, res) => {
 exports.getUserRating = [authenticateToken, async (req, res) => {
     try {
         const { projectId } = req.params;
-        const userId = req.user.id;
+        const userId = req.user._id; // Fixed: use _id instead of id
 
         const project = await Project.findById(projectId);
         if (!project) {
