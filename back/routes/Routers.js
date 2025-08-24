@@ -38,4 +38,16 @@ router.get("/users/:userId/follow-status", authenticateToken, getFollowStatus);
 router.get("/users/:userId/followers", getFollowers);
 router.get("/users/:userId/following", getFollowing);
 
+// TEMPORARY: Migration route - REMOVE AFTER RUNNING ONCE
+router.get("/admin/migrate-follow-fields", async (req, res) => {
+    try {
+        const migrateFollowFields = require('../migrateFollowFields');
+        await migrateFollowFields();
+        res.json({ success: true, message: 'Migration completed successfully' });
+    } catch (error) {
+        console.error('Migration error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 module.exports = router;
